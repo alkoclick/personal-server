@@ -41,6 +41,8 @@ services:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     platform: linux/arm64 # Because the autodetection does not work for Raspberry Pi 4B
     restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
     depends_on:
       - broker
       - gotenberg
