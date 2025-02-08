@@ -1,0 +1,1 @@
+Restart the docker daemon using `sudo systemctl restart docker` to apply the changes.

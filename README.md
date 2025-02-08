@@ -5,7 +5,7 @@ My home automation setup, currently on a Raspberry Pi 4B.
 ## Required for setup
 
 * Docker
-* Git authenticated with GitHub
+* Git
 
 ## Current services (not yet ported to code)
 
