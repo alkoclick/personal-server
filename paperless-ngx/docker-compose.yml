@@ -39,6 +39,7 @@ services:
 
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    platform: linux/arm64 # Because the autodetection does not work for Raspberry Pi 4B
     restart: unless-stopped
     depends_on:
       - broker
