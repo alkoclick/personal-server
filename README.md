@@ -18,4 +18,7 @@ My home automation setup, currently on a Raspberry Pi 4B.
 
 ## TODO
 
-Set up Syncthing export of the paperless-ngx media docker volume
+* Set up Syncthing export of the paperless-ngx media docker volume
+* Import into paperless:
+  * Physical documents
+  * Email
