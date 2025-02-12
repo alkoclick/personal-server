@@ -76,6 +76,19 @@ services:
     image: docker.io/apache/tika:latest
     restart: unless-stopped
 
+  syncthing:
+    image: syncthing/syncthing:latest
+    container_name: syncthing
+    restart: unless-stopped
+    ports:
+      - "8484:8384"   # Exposes the Syncthing web UI on port 8484
+    volumes:
+      - media:/media   # Mounts the paperless media volume
+    #      - ./config:/config  # Persist Syncthing's settings
+    environment:
+      - PUID=0  # Use your desired user ID for the container
+      - PGID=0  # Use your desired group ID for the container
+
 volumes:
   data:
   media:
