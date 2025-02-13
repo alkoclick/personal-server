@@ -82,7 +82,7 @@ services:
     container_name: syncthing
     restart: unless-stopped
 #    ports:
-#      - "8484:8384"   # Exposes the Syncthing web UI on port 8484
+#      - "8484:8384"   # Exposes the Syncthing web UI on port 8484, off by default unless you need it for troubleshooting
     volumes:
       - media:/media   # Mounts the paperless media volume
       - ./syncthing/config.xml:/var/syncthing/config/config.xml  # Persist Syncthing's settings
