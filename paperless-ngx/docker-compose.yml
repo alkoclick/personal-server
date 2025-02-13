@@ -76,12 +76,13 @@ services:
     image: docker.io/apache/tika:latest
     restart: unless-stopped
 
+# We are adding syncthing in here so that we can mount any volumes declared in this docker-compose
   syncthing:
     image: syncthing/syncthing:latest
     container_name: syncthing
     restart: unless-stopped
-    ports:
-      - "8484:8384"   # Exposes the Syncthing web UI on port 8484
+#    ports:
+#      - "8484:8384"   # Exposes the Syncthing web UI on port 8484
     volumes:
       - media:/media   # Mounts the paperless media volume
       - ./syncthing/config.xml:/var/syncthing/config/config.xml  # Persist Syncthing's settings
