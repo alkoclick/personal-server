@@ -52,6 +52,17 @@
         <remoteGUIPort>0</remoteGUIPort>
         <numConnections>0</numConnections>
     </device>
+    <device id="ORVMP5F-ESLYPO7-F7A4AHU-EXFIKFX-5KK65GC-PMGLE22-GTCYPJ4-LNAIWAL" name="DESKTOP-0SD6TVH" compression="metadata" introducer="false" skipIntroductionRemovals="false" introducedBy="">
+        <address>dynamic</address>
+        <paused>false</paused>
+        <autoAcceptFolders>false</autoAcceptFolders>
+        <maxSendKbps>0</maxSendKbps>
+        <maxRecvKbps>0</maxRecvKbps>
+        <maxRequestKiB>0</maxRequestKiB>
+        <untrusted>false</untrusted>
+        <remoteGUIPort>0</remoteGUIPort>
+        <numConnections>0</numConnections>
+    </device>
     <!-- Not too worried about this because normally we don't expose the port outside of docker's virtual network -->
     <gui enabled="true" tls="false" debugging="false" sendBasicAuthPrompt="false">
         <address>0.0.0.0:8384</address>
