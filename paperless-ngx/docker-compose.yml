@@ -76,6 +76,32 @@ services:
     image: docker.io/apache/tika:latest
     restart: unless-stopped
 
+  dashy:
+    # To build from source, replace 'image: lissy93/dashy' with 'build: .'
+    # build: .
+    image: lissy93/dashy
+    container_name: Dashy
+      # Pass in your config file below, by specifying the path on your host machine
+      # volumes:
+    # - /dashy/dashy-conf.yml:/app/user-data/conf.yml
+    ports:
+      - "8080:8080"
+    # Set any environmental variables
+    environment:
+      - NODE_ENV=production
+    # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
+      - UID=0
+      - GID=0
+    # Specify restart policy
+    restart: unless-stopped
+    # Configure healthchecks
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
 # We are adding syncthing in here so that we can mount any volumes declared in this docker-compose
   syncthing:
     image: syncthing/syncthing:latest
