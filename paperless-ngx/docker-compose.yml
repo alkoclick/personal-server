@@ -115,7 +115,7 @@ services:
     ports:
       - "61208:61208"
     environment:
-      - GLANCES_OPTS=-w
+      - GLANCES_OPT=-w
       - PUID=0
       - PGID=0
       - TZ=Europe/Amsterdam
