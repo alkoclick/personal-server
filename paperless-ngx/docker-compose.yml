@@ -105,6 +105,7 @@ services:
   glances:
     image: nicolargo/glances:latest
     hostname: glances
+    platform: linux/arm64
     restart: unless-stopped
     command: /usr/bin/glances -v --pidfile /var/run/glances.pid
     privileged: true
