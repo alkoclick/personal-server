@@ -69,8 +69,3 @@ sections:
     icon: far fa-calendar-day
     widgets:
       - type: clock
-      - type: weather
-        options:
-          apiKey: VUE_APP_WEATHER_TOKEN
-          city: Amsterdam
-          units: metric
