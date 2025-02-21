@@ -13,36 +13,10 @@ appConfig:
   layout: horizontal
   iconSize: large
 sections:
-  - name: Getting Started
-    icon: fas fa-rocket
-    items:
-      - title: Dashy Live
-        description: Development a project management links for Dashy
-        icon: https://i.ibb.co/qWWpD0v/astro-dab-128.png
-        url: https://live.dashy.to/
-        target: newtab
-        id: 0_1481_dashylive
-      - title: GitHub
-        description: Source Code, Issues and Pull Requests
-        url: https://github.com/lissy93/dashy
-        icon: favicon
-        id: 1_1481_github
-      - title: Docs
-        description: Configuring & Usage Documentation
-        provider: Dashy.to
-        icon: far fa-book
-        url: https://dashy.to/docs
-        id: 2_1481_docs
-      - title: Showcase
-        description: See how others are using Dashy
-        url: https://github.com/Lissy93/dashy/blob/master/docs/showcase.md
-        icon: far fa-grin-hearts
-        id: 3_1481_showcase
-      - title: Config Guide
-        description: See full list of configuration options
-        url: https://github.com/Lissy93/dashy/blob/master/docs/configuring.md
-        icon: fas fa-wrench
-        id: 4_1481_configguide
+  - name: Today
+    icon: far fa-calendar-day
+    widgets:
+      - type: clock
   - name: Tools
     displayData:
       sortBy: default
@@ -65,7 +39,3 @@ sections:
         url: http://192.168.178.99:8096/web/index.html#/home.html
         target: sametab
         id: 1_529_jellyfin
-  - name: Today
-    icon: far fa-calendar-day
-    widgets:
-      - type: clock
