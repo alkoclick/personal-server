@@ -80,7 +80,7 @@ services:
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
     # build: .
     image: lissy93/dashy
-    container_name: Dashy
+    container_name: dashy
     # Pass in your config file below, by specifying the path on your host machine
     volumes:
      - ./dashy/dashy-conf.yml:/app/user-data/conf.yml
@@ -105,6 +105,7 @@ services:
   glances:
     image: nicolargo/glances:latest
     hostname: glances
+    container_name: glances
     platform: linux/arm64
     restart: unless-stopped
     privileged: true
@@ -115,8 +116,8 @@ services:
       - "61208:61208"
     environment:
       - GLANCES_OPTS=-w
-      - PUID=1000
-      - PGID=1000
+      - PUID=0
+      - PGID=0
       - TZ=Europe/Amsterdam
 
 # We are adding syncthing in here so that we can mount any volumes declared in this docker-compose
