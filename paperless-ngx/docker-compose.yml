@@ -75,6 +75,9 @@ services:
   tika:
     image: docker.io/apache/tika:latest
     restart: unless-stopped
+    environment:
+      - TIKA_OPTS=-Xmx512m -Xms512m
+    mem_limit: 512m
 
   dashy:
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
