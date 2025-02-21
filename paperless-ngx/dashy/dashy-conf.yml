@@ -65,7 +65,7 @@ sections:
         url: http://192.168.178.99:8096/web/index.html#/home.html
         target: sametab
         id: 1_529_jellyfin
-  - name: Today
-    icon: far fa-calendar-day
-    widgets:
-      - type: clock
+#  - name: Today
+#    icon: far fa-calendar-day
+#    widgets:
+#      - type: clock
