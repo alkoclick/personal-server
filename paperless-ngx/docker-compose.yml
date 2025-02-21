@@ -83,7 +83,7 @@ services:
     container_name: Dashy
       # Pass in your config file below, by specifying the path on your host machine
     volumes:
-     - /dashy/dashy-conf.yml:/app/user-data/conf.yml
+     - dashy/dashy-conf.yml:/app/user-data/conf.yml
     ports:
       - "8080:8080"
     # Set any environmental variables
