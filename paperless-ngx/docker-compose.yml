@@ -101,6 +101,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    secrets:
+      - open_weather_token
 
 # We are adding syncthing in here so that we can mount any volumes declared in this docker-compose
   syncthing:
@@ -115,6 +117,10 @@ services:
     environment:
       - PUID=0  # Use your desired user ID for the container
       - PGID=0  # Use your desired group ID for the container
+
+secrets:
+  open_weather_token:
+    file: open_weather_token
 
 volumes:
   data:
