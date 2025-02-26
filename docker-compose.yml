@@ -30,6 +30,8 @@
 # For more extensive installation and update instructions, refer to the
 # documentation.
 
+name:  paperless
+
 services:
   broker:
     image: docker.io/library/redis:7
@@ -52,12 +54,8 @@ services:
       - media:/usr/src/paperless/media
       - ./export:/usr/src/paperless/export
       - ./consume:/usr/src/paperless/consume
-    env_file:
-      - paperless.env
-      - tailscale.env
+    env_file: paperless.env
     environment:
-      # This is required if you will be exposing Paperless-ngx on a public domain
-      PAPERLESS_URL: https://paperless:${TS_DOMAIN:?error}
       PAPERLESS_REDIS: redis://broker:6379
       PAPERLESS_TIKA_ENABLED: 1
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
@@ -146,10 +144,9 @@ services:
     image: tailscale/tailscale:latest
     container_name: ts-paperless
     hostname: paperless
-    env_file:
-      - tailscale.env
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TS_AUTHKEY:?error}
       - TS_EXTRA_ARGS=--reset
       - TS_SERVE_CONFIG=/config/paperless.json
       - TS_USERSPACE=false
