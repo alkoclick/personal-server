@@ -84,7 +84,6 @@ services:
 
   glances:
     image: nicolargo/glances:latest
-    hostname: glancesas
     container_name: glances
     platform: linux/arm64
     restart: unless-stopped
