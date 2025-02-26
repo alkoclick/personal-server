@@ -49,6 +49,7 @@ services:
       - broker
       - gotenberg
       - tika
+      - ts-paperless
     volumes:
       - data:/usr/src/paperless/data
       - media:/usr/src/paperless/media
