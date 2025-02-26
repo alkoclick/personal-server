@@ -60,6 +60,7 @@ services:
       PAPERLESS_TIKA_ENABLED: 1
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
       PAPERLESS_TIKA_ENDPOINT: http://tika:9998
+    network_mode: service:ts-tailscale-paperless
 
   gotenberg:
     image: docker.io/gotenberg/gotenberg:8.7
@@ -138,7 +139,27 @@ services:
       - PGID=0  # Use your desired group ID for the container
     # Add a secret API key to secure the Syncthing web UI
 
+# Tailscales
+  tailscale-paperless:
+    image: tailscale/tailscale:latest
+    container_name: ts-paperless
+    hostname: paperless
+    env_file:
+      - tailscale.env
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    volumes:
+      - ts-authkey-test:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+
 volumes:
   data:
   media:
   redisdata:
+  ts-authkey-test:
+    driver: local
