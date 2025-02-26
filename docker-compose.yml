@@ -53,8 +53,8 @@ services:
       - ./export:/usr/src/paperless/export
       - ./consume:/usr/src/paperless/consume
     env_file:
-    - paperless.env
-    - tailscale.env
+      - paperless.env
+      - tailscale.env
     environment:
       # This is required if you will be exposing Paperless-ngx on a public domain
       PAPERLESS_URL: https://paperless:${TS_DOMAIN:?error}
@@ -89,20 +89,20 @@ services:
     container_name: dashy
     # Pass in your config file below, by specifying the path on your host machine
     volumes:
-     - ./dashy/dashy-conf.yml:/app/user-data/conf.yml
+      - ./dashy/dashy-conf.yml:/app/user-data/conf.yml
     ports:
       - "8080:8080"
     # Set any environmental variables
     environment:
       NODE_ENV: production
-    # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
+      # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
       UID: 0
       GID: 0
     # Specify restart policy
     restart: unless-stopped
     # Configure healthchecks
     healthcheck:
-      test: ['CMD', 'node', '/app/services/healthcheck']
+      test: [ 'CMD', 'node', '/app/services/healthcheck' ]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -126,13 +126,13 @@ services:
       - PGID=0
       - TZ=Europe/Amsterdam
 
-# We are adding syncthing in here so that we can mount any volumes declared in this docker-compose
+  # We are adding syncthing in here so that we can mount any volumes declared in this docker-compose
   syncthing:
     image: syncthing/syncthing:latest
     container_name: syncthing
     restart: unless-stopped
-#    ports:
-#      - "8484:8384"   # Exposes the Syncthing web UI on port 8484, off by default unless you need it for troubleshooting
+    #    ports:
+    #      - "8484:8384"   # Exposes the Syncthing web UI on port 8484, off by default unless you need it for troubleshooting
     volumes:
       - media:/media   # Mounts the paperless media volume
       - ./syncthing/config.xml:/var/syncthing/config/config.xml  # Persist Syncthing's settings
@@ -141,7 +141,7 @@ services:
       - PGID=0  # Use your desired group ID for the container
     # Add a secret API key to secure the Syncthing web UI
 
-# Tailscales
+  # Tailscales
   ts-paperless:
     image: tailscale/tailscale:latest
     container_name: ts-paperless
