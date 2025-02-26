@@ -60,7 +60,7 @@ services:
       PAPERLESS_TIKA_ENABLED: 1
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
       PAPERLESS_TIKA_ENDPOINT: http://tika:9998
-    network_mode: service:ts-tailscale-paperless
+    network_mode: service:ts-paperless
 
   gotenberg:
     image: docker.io/gotenberg/gotenberg:8.7
@@ -140,7 +140,7 @@ services:
     # Add a secret API key to secure the Syncthing web UI
 
 # Tailscales
-  tailscale-paperless:
+  ts-paperless:
     image: tailscale/tailscale:latest
     container_name: ts-paperless
     hostname: paperless
