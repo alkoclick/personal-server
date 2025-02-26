@@ -120,6 +120,8 @@ services:
     container_name: jellyfin
     user: 116:125
     network_mode: service:ts-jellyfin
+    depends_on:
+      - ts-jellyfin
     volumes:
       - jellyfin-config:/config
       - jellyfin-cache:/cache
@@ -148,9 +150,6 @@ services:
     # Optional - alternative address used for autodiscovery
 #    environment:
 #      - JELLYFIN_PublishedServerUrl=http://jellyfin.${TS_HOSTNAME:?error}
-    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
 
   # Tailscales
   ts-paperless:
