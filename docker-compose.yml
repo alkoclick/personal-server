@@ -149,8 +149,8 @@ services:
       - TS_SERVE_CONFIG=/config/paperless.json
       - TS_USERSPACE=false
     volumes:
-      - tailscale:/config
-      - ts-authkey-test:/var/lib/tailscale
+      - ./tailscale/paperless.json:/config/paperless.json
+      - ts-paperless:/var/lib/tailscale
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
@@ -161,5 +161,5 @@ volumes:
   data:
   media:
   redisdata:
-  ts-authkey-test:
+  ts-paperless:
     driver: local
