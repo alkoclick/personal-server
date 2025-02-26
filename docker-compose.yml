@@ -238,5 +238,6 @@ volumes:
   ts-paperless:
   ts-dashy:
   ts-jellyfin:
+  ts-glances:
   jellyfin-config:
   jellyfin-cache:
