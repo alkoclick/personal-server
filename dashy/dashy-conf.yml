@@ -12,12 +12,15 @@ appConfig:
   theme: vaporware
   layout: horizontal
   iconSize: medium
+  preventLocalSave: true
+
 sections:
   - name: Today
     icon: far fa-calendar-day
     widgets:
       - type: clock
         id: 0_513_clock
+    filteredItems: [ ]
   - name: Tools
     displayData:
       sortBy: default
@@ -26,21 +29,24 @@ sections:
       collapsed: false
       hideForGuests: false
     items:
-      - title: Paperless
+      - &ref_0
+        title: Paperless
         description: >-
-          A community-supported supercharged version of paperless: scan, index
-          and archive all your physical documents
-        icon: http://192.168.178.99:8000/favicon.ico
-        url: http://192.168.178.99:8000/documents?sort=added&reverse=1&page=1
+          Document index and archive
+        icon: https://paperless.${VUE_APP_TS_DOMAIN}/favicon.ico
+        url: >-
+          https://paperless.${VUE_APP_TS_DOMAIN}/documents?sort=created&reverse=1&page=1
         target: sametab
         id: 0_529_paperless
-      - title: Jellyfin
-        description: The Free Software Media System - Server Backend & API
+      - &ref_1
+        title: Jellyfin
+        description: Music player
         icon: http://192.168.178.99:8096/web/6a2e2e6b4186720e5d4f.png
         url: http://192.168.178.99:8096/web/index.html#/home.html
         target: sametab
         id: 1_529_jellyfin
-      - title: Glances
+      - &ref_2
+        title: Glances
         description: >-
           A cross-platform monitoring tool that aims to present maximum
           information in minimal space through either a curses-based or
@@ -49,6 +55,10 @@ sections:
         url: http://192.168.178.99:61208/
         target: sametab
         id: 2_529_glances
+    filteredItems:
+      - *ref_0
+      - *ref_1
+      - *ref_2
   - name: Tools - External
     displayData:
       sortBy: default
@@ -57,9 +67,12 @@ sections:
       collapsed: false
       hideForGuests: false
     items:
-      - title: PairDrop
+      - &ref_3
+        title: PairDrop
         description: PairDrop | Transfer Files Cross-Platform. No Setup, No Signup.
         icon: https://pairdrop.net/images/favicon-96x96.png
         url: https://pairdrop.net/
         target: sametab
         id: 0_1473_pairdrop
+    filteredItems:
+      - *ref_3
