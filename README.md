@@ -31,5 +31,6 @@ My home automation setup, currently on a Raspberry Pi 4B.
 * Multiple users
 * Upload music via the UI?
 * Expose via Tailscale
+* Consider hardware acceleration
 * yt-dlp + Jellyfin integration?
 * Add music library syncing on Syncthing
