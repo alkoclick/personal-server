@@ -89,11 +89,11 @@ services:
     platform: linux/arm64
     restart: unless-stopped
     privileged: true
-    pid: "host"
+    network_mode: service:ts-glances
+    depends_on:
+      - ts-glances
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    ports:
-      - "61208:61208"
     environment:
       - GLANCES_OPT=-w
       - PUID=0
@@ -203,6 +203,25 @@ services:
     volumes:
       - ./tailscale/jellyfin.json:/config/jellyfin.json
       - ts-jellyfin:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+
+  ts-glances:
+    image: tailscale/tailscale:latest
+    container_name: ts-glances
+    hostname: glances
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TS_AUTHKEY:?error}
+      - TS_EXTRA_ARGS=--reset
+      - TS_SERVE_CONFIG=/config/glances.json
+      - TS_USERSPACE=false
+    volumes:
+      - ./tailscale/glances.json:/config/glances.json
+      - ts-glances:/var/lib/tailscale
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
