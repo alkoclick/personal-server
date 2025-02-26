@@ -21,7 +21,7 @@
 #
 # To install and update paperless with this file, do the following:
 #
-# - Copy this file as 'docker-compose.yml' and the files 'docker-compose.env'
+# - Copy this file as 'docker-compose.yml' and the files 'paperless.env'
 #   and '.env' into a folder.
 # - Run 'docker compose pull'.
 # - Run 'docker compose run --rm webserver createsuperuser' to create a user.
@@ -54,7 +54,7 @@ services:
       - media:/usr/src/paperless/media
       - ./export:/usr/src/paperless/export
       - ./consume:/usr/src/paperless/consume
-    env_file: docker-compose.env
+    env_file: paperless.env
     environment:
       PAPERLESS_REDIS: redis://broker:6379
       PAPERLESS_TIKA_ENABLED: 1
@@ -107,7 +107,7 @@ services:
 
   glances:
     image: nicolargo/glances:latest
-    hostname: glances
+    hostname: glancesas
     container_name: glances
     platform: linux/arm64
     restart: unless-stopped
@@ -136,6 +136,7 @@ services:
     environment:
       - PUID=0  # Use your desired user ID for the container
       - PGID=0  # Use your desired group ID for the container
+    # Add a secret API key to secure the Syncthing web UI
 
 volumes:
   data:
