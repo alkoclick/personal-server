@@ -52,8 +52,12 @@ services:
       - media:/usr/src/paperless/media
       - ./export:/usr/src/paperless/export
       - ./consume:/usr/src/paperless/consume
-    env_file: paperless.env
+    env_file:
+    - paperless.env
+    - tailscale.env
     environment:
+      # This is required if you will be exposing Paperless-ngx on a public domain
+      PAPERLESS_URL: https://paperless:${TS_DOMAIN:?error}
       PAPERLESS_REDIS: redis://broker:6379
       PAPERLESS_TIKA_ENABLED: 1
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
