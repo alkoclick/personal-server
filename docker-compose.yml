@@ -1,35 +1,4 @@
-# Docker Compose file for running paperless from the docker container registry.
-# This file contains everything paperless needs to run.
-# Paperless supports amd64, arm and arm64 hardware.
-# All compose files of paperless configure paperless in the following way:
-#
-# - Paperless is (re)started on system boot, if it was running before shutdown.
-# - Docker volumes for storing data are managed by Docker.
-# - Folders for importing and exporting files are created in the same directory
-#   as this file and mounted to the correct folders inside the container.
-# - Paperless listens on port 8000.
-#
-# SQLite is used as the database. The SQLite file is stored in the data volume.
-#
-# In addition to that, this Docker Compose file adds the following optional
-# configurations:
-#
-# - Apache Tika and Gotenberg servers are started with paperless and paperless
-#   is configured to use these services. These provide support for consuming
-#   Office documents (Word, Excel, Power Point and their LibreOffice counter-
-#   parts.
-#
-# To install and update paperless with this file, do the following:
-#
-# - Copy this file as 'docker-compose.yml' and the files 'paperless.env'
-#   and '.env' into a folder.
-# - Run 'docker compose pull'.
-# - Run 'docker compose run --rm webserver createsuperuser' to create a user.
-# - Run 'docker compose up -d'.
-#
-# For more extensive installation and update instructions, refer to the
-# documentation.
-
+# Not sure if changing the name will break any volumes, so I'm leaving it as is.
 name:  paperless
 
 services:
@@ -63,6 +32,10 @@ services:
       PAPERLESS_TIKA_ENDPOINT: http://tika:9998
     network_mode: service:ts-paperless
 
+  # - Apache Tika and Gotenberg servers are started with paperless and paperless
+  #   is configured to use these services. These provide support for consuming
+  #   Office documents (Word, Excel, Power Point and their LibreOffice counter-
+  #   parts.
   gotenberg:
     image: docker.io/gotenberg/gotenberg:8.7
     restart: unless-stopped
@@ -89,8 +62,8 @@ services:
     # Pass in your config file below, by specifying the path on your host machine
     volumes:
       - ./dashy/dashy-conf.yml:/app/user-data/conf.yml
-    ports:
-      - "8080:8080"
+    depends_on:
+      - ts-dashy
     # Set any environmental variables
     environment:
       NODE_ENV: production
@@ -99,6 +72,8 @@ services:
       GID: 0
     # Specify restart policy
     restart: unless-stopped
+    # Connect to the Tailscale network
+    network_mode: service:ts-dashy
     # Configure healthchecks
     healthcheck:
       test: [ 'CMD', 'node', '/app/services/healthcheck' ]
@@ -160,9 +135,31 @@ services:
       - net_admin
     restart: unless-stopped
 
+  ts-dashy:
+    image: tailscale/tailscale:latest
+    container_name: ts-dashy
+    hostname: dashy
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TS_AUTHKEY:?error}
+      - TS_EXTRA_ARGS=--reset
+      - TS_SERVE_CONFIG=/config/dashy.json
+      - TS_USERSPACE=false
+    volumes:
+      - ./tailscale/dashy.json:/config/dashy.json
+      - ts-dashy:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+
 volumes:
+  # SQLite is used as the paperless database. The SQLite file is stored in the data volume.
   data:
   media:
   redisdata:
   ts-paperless:
+    driver: local
+  ts-dashy:
     driver: local
