@@ -147,6 +147,7 @@ services:
       - /run/udev:/run/udev:ro
     devices:
       - "/dev/sda"
+    restart: 'unless-stopped'
 
   # Tailscales
   ts-paperless:
