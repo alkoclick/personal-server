@@ -134,13 +134,11 @@ services:
     container_name: scrutiny
     platform: linux/arm64
     image: ghcr.io/analogj/scrutiny:master-omnibus
+    network_mode: service:ts-scrutiny
     cap_add:
       - SYS_RAWIO
     environment:
       COLLECTOR_CRON_SCHEDULE: "0 0 * * *"
-    ports:
-      - "8080:8080" # webapp
-      - "8086:8086" # influxDB admin
     depends_on:
       - ts-scrutiny
     volumes:
