@@ -130,23 +130,6 @@ services:
       - /media/external/windows/Video:/media/video
     restart: 'unless-stopped'
 
-  scrutiny:
-    container_name: scrutiny
-    platform: linux/arm64
-    image: ghcr.io/analogj/scrutiny:master-omnibus
-    network_mode: service:ts-scrutiny
-    cap_add:
-      - SYS_RAWIO
-    environment:
-      COLLECTOR_CRON_SCHEDULE: "0 0 * * *"
-    depends_on:
-      - ts-scrutiny
-    volumes:
-      - /run/udev:/run/udev:ro
-    devices:
-      - "/dev/sda"
-    restart: 'unless-stopped'
-
   # Tailscales
   ts-paperless:
     image: tailscale/tailscale:latest
@@ -224,26 +207,6 @@ services:
       - net_admin
     restart: unless-stopped
 
-  ts-scrutiny:
-    image: tailscale/tailscale:latest
-    container_name: ts-scrutiny
-    hostname: scrutiny
-    environment:
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_AUTHKEY=${TS_AUTHKEY:?error}
-      - TS_EXTRA_ARGS=--reset
-      - TS_SERVE_CONFIG=/config/scrutiny.json
-      - TS_USERSPACE=false
-    volumes:
-      - ./tailscale/scrutiny.json:/config/scrutiny.json
-      - ts-scrutiny:/var/lib/tailscale
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    cap_add:
-      - net_admin
-    restart: unless-stopped
-
-
 volumes:
   # SQLite is used as the paperless database. The SQLite file is stored in the data volume.
   data:
@@ -254,6 +217,5 @@ volumes:
   ts-dashy:
   ts-jellyfin:
   ts-glances:
-  ts-scrutiny:
   jellyfin-config:
   jellyfin-cache:
