@@ -118,6 +118,7 @@ services:
     image: lscr.io/linuxserver/transmission:4.0.6
     container_name: transmission
     platform: linux/arm64
+    network_mode: host
     security_opt:
       - seccomp:unconfined # Because error code 159 keeps showing up otherwise
     environment:
