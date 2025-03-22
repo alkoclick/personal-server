@@ -128,6 +128,7 @@ services:
       - PGID=125
       - TZ=Etc/UTC
     volumes:
+      - /media/external/windows/Music:/music
       - /media/external/windows/Video:/video
     restart: unless-stopped
 
