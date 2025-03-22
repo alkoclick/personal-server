@@ -115,7 +115,7 @@ services:
     # Add a secret API key to secure the Syncthing web UI
 
   jellyfin:
-    image: jellyfin/jellyfin
+    image: jellyfin/jellyfin:10.10.6
     container_name: jellyfin
     user: 116:125
     network_mode: service:ts-jellyfin
