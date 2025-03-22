@@ -114,24 +114,22 @@ services:
       - PGID=0  # Use your desired group ID for the container
     # Add a secret API key to secure the Syncthing web UI
 
-  transmission:
-    image: lscr.io/linuxserver/transmission:4.0.6
-    container_name: transmission
+  qbittorrent:
+    image: linuxserver/qbittorrent:5.0.4
+    container_name: qbittorrent
     platform: linux/arm64
     network_mode: host
-    security_opt:
-      - seccomp:unconfined # Because error code 159 keeps showing up otherwise
+#    security_opt:
+#      - seccomp:unconfined # Because error code 159 keeps showing up otherwise
     environment:
-      - PUID=125
+      - PUID=116
       - PGID=125
       - TZ=Etc/UTC
     volumes:
       - /media/external/windows/Music:/music
       - /media/external/windows/Video:/video
     ports:
-      - "9091:9091"
-      - "51413:51413"
-      - "51413:51413/udp"
+      - "9091:8080"
     restart: unless-stopped
 
   jellyfin:
