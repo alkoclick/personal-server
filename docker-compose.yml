@@ -118,11 +118,8 @@ services:
     image: lscr.io/linuxserver/transmission:4.0.6
     container_name: transmission
     platform: linux/arm64
-    depends_on:
-      - ts-transmission
     security_opt:
       - seccomp:unconfined # Because error code 159 keeps showing up otherwise
-    network_mode: service:ts-transmission
     environment:
       - PUID=125
       - PGID=125
@@ -130,6 +127,10 @@ services:
     volumes:
       - /media/external/windows/Music:/music
       - /media/external/windows/Video:/video
+    ports:
+      - "9091:9091"
+      - "51413:51413"
+      - "51413:51413/udp"
     restart: unless-stopped
 
   jellyfin:
@@ -225,25 +226,6 @@ services:
       - net_admin
     restart: unless-stopped
 
-  ts-transmission:
-    image: tailscale/tailscale:latest
-    container_name: ts-transmission
-    hostname: torrent
-    environment:
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_AUTHKEY=${TS_AUTHKEY:?error}
-      - TS_EXTRA_ARGS=--reset
-      - TS_SERVE_CONFIG=/config/transmission.json
-      - TS_USERSPACE=false
-    volumes:
-      - ./tailscale/transmission.json:/config/transmission.json
-      - ts-transmission:/var/lib/tailscale
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    cap_add:
-      - net_admin
-    restart: unless-stopped
-
 volumes:
   # SQLite is used as the paperless database. The SQLite file is stored in the data volume.
   data:
@@ -254,6 +236,5 @@ volumes:
   ts-dashy:
   ts-jellyfin:
   ts-glances:
-  ts-transmission:
   jellyfin-config:
   jellyfin-cache:
