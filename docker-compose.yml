@@ -118,15 +118,15 @@ services:
     image: lscr.io/linuxserver/transmission:4.0.6
     container_name: transmission
     platform: linux/arm64
+    security_opt:
+      - seccomp:unconfined # Because error code 159 keeps showing up otherwise
     network_mode: service:ts-transmission
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=125
+      - PGID=125
       - TZ=Etc/UTC
-#    volumes:
-#      - /transmission/data:/config
-#      - /path/to/downloads:/downloads #optional
-#      - /path/to/watch/folder:/watch #optional
+    volumes:
+      - /media/external/windows/Video:/video
     restart: unless-stopped
 
   jellyfin:
