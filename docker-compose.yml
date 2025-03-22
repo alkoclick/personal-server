@@ -251,5 +251,6 @@ volumes:
   ts-dashy:
   ts-jellyfin:
   ts-glances:
+  ts-transmission:
   jellyfin-config:
   jellyfin-cache:
