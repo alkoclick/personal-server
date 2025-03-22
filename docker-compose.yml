@@ -114,6 +114,21 @@ services:
       - PGID=0  # Use your desired group ID for the container
     # Add a secret API key to secure the Syncthing web UI
 
+  transmission:
+    image: lscr.io/linuxserver/transmission:4.0.6
+    container_name: transmission
+    platform: linux/arm64
+    network_mode: service:ts-transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+#    volumes:
+#      - /transmission/data:/config
+#      - /path/to/downloads:/downloads #optional
+#      - /path/to/watch/folder:/watch #optional
+    restart: unless-stopped
+
   jellyfin:
     image: jellyfin/jellyfin:10.10.6
     container_name: jellyfin
@@ -201,6 +216,25 @@ services:
     volumes:
       - ./tailscale/glances.json:/config/glances.json
       - ts-glances:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+
+  ts-transmission:
+    image: tailscale/tailscale:latest
+    container_name: ts-transmission
+    hostname: torrent
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TS_AUTHKEY:?error}
+      - TS_EXTRA_ARGS=--reset
+      - TS_SERVE_CONFIG=/config/transmission.json
+      - TS_USERSPACE=false
+    volumes:
+      - ./tailscale/transmission.json:/config/transmission.json
+      - ts-transmission:/var/lib/tailscale
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
