@@ -119,6 +119,8 @@ services:
     container_name: qbittorrent
     platform: linux/arm64
     network_mode: service:ts-qbittorrent
+    depends_on:
+      - ts-qbittorrent
     security_opt:
       - seccomp:unconfined # Because error code 159 keeps showing up otherwise
     environment:
