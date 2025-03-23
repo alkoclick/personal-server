@@ -252,5 +252,6 @@ volumes:
   ts-dashy:
   ts-jellyfin:
   ts-glances:
+  ts-qbittorrent:
   jellyfin-config:
   jellyfin-cache:
