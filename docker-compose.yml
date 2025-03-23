@@ -118,9 +118,9 @@ services:
     image: linuxserver/qbittorrent:5.0.4
     container_name: qbittorrent
     platform: linux/arm64
-    network_mode: host
-#    security_opt:
-#      - seccomp:unconfined # Because error code 159 keeps showing up otherwise
+    network_mode: service:ts-qbittorrent
+    security_opt:
+      - seccomp:unconfined # Because error code 159 keeps showing up otherwise
     environment:
       - PUID=116
       - PGID=125
@@ -128,8 +128,6 @@ services:
     volumes:
       - /media/external/windows/Music:/music
       - /media/external/windows/Video:/video
-    ports:
-      - "9091:8080"
     restart: unless-stopped
 
   jellyfin:
@@ -219,6 +217,25 @@ services:
     volumes:
       - ./tailscale/glances.json:/config/glances.json
       - ts-glances:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+
+  ts-qbittorrent:
+    image: tailscale/tailscale:latest
+    container_name: ts-qbittorrent
+    hostname: torrent
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TS_AUTHKEY:?error}
+      - TS_EXTRA_ARGS=--reset
+      - TS_SERVE_CONFIG=/config/qbittorrent.json
+      - TS_USERSPACE=false
+    volumes:
+      - ./tailscale/qbittorrent.json:/config/qbittorrent.json
+      - ts-qbittorrent:/var/lib/tailscale
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
