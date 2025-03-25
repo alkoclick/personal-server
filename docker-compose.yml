@@ -162,6 +162,8 @@ services:
     image: 'ghcr.io/corentinth/it-tools:latest'
     container_name: it-tools
     platform: linux/arm64
+    security_opt:
+      - seccomp:unconfined
     network_mode: service:ts-it-tools
     depends_on:
       - ts-it-tools
