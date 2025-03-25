@@ -31,6 +31,7 @@ services:
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
       PAPERLESS_TIKA_ENDPOINT: http://tika:9998
     network_mode: service:ts-paperless
+    mem_limit: 850m
 
   # - Apache Tika and Gotenberg servers are started with paperless and paperless
   #   is configured to use these services. These provide support for consuming
