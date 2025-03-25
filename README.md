@@ -16,15 +16,19 @@ My home automation setup, currently on a Raspberry Pi 4B.
 * [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx)
 * [Dashy](https://github.com/Lissy93/dashy)
 * [Syncthing](https://github.com/syncthing/syncthing)
+* [Jellyfin](https://github.com/jellyfin/jellyfin)
+* [Tailscale](https://tailscale.com/)
+* [qBittorrent](https://github.com/qbittorrent/qBittorrent)
 
 ## TODO
+* Some kind of uptime monitoring
+* Add music library syncing on Syncthing
+
+## Backlog
 
 #### Monitoring
 * Set up S.M.A.R.T. monitoring
-* Some kind of uptime monitoring
 
 #### Jellyfin upgrades
 * Upload music via the UI?
-* Consider hardware acceleration
 * yt-dlp + Jellyfin integration?
-* Add music library syncing on Syncthing
