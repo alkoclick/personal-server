@@ -148,6 +148,25 @@ services:
       - /media/external/windows/Video:/media/video
     restart: 'unless-stopped'
 
+  calibre:
+    image: lscr.io/linuxserver/calibre:latest
+    container_name: calibre
+    network_mode: host
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - CLI_ARGS= #optional
+    volumes:
+      - /calibre:/config
+    ports:
+      - 8080:8080
+      - 8181:8181
+      - 8081:8081
+    restart: unless-stopped
+
   # Tailscales
   ts-paperless:
     image: tailscale/tailscale:latest
