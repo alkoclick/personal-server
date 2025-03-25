@@ -30,5 +30,5 @@ My home automation setup, currently on a Raspberry Pi 4B.
 * Set up S.M.A.R.T. monitoring
 
 #### Jellyfin upgrades
-* Upload music via the UI?
-* yt-dlp + Jellyfin integration?
+* Upload music via the UI? E.g: https://github.com/grandguyjs/media-upload-plugin
+* yt-dlp + Jellyfin integration? E.g: https://github.com/jmbannon/ytdl-sub?tab=readme-ov-file
