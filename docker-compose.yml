@@ -31,7 +31,7 @@ services:
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
       PAPERLESS_TIKA_ENDPOINT: http://tika:9998
     network_mode: service:ts-paperless
-    mem_limit: 850m
+    mem_limit: 1024m
 
   # - Apache Tika and Gotenberg servers are started with paperless and paperless
   #   is configured to use these services. These provide support for consuming
@@ -156,6 +156,7 @@ services:
       - /media/external/windows/Radio:/media/radio
       - /media/external/windows/Video:/media/video
     restart: 'unless-stopped'
+    mem_limit: 1280m
 
   # Tailscales
   ts-paperless:
@@ -176,6 +177,7 @@ services:
     cap_add:
       - net_admin
     restart: unless-stopped
+    mem_limit: 200m
 
   ts-dashy:
     image: tailscale/tailscale:latest
@@ -195,6 +197,7 @@ services:
     cap_add:
       - net_admin
     restart: unless-stopped
+    mem_limit: 200m
 
   ts-jellyfin:
     image: tailscale/tailscale:latest
@@ -214,6 +217,7 @@ services:
     cap_add:
       - net_admin
     restart: unless-stopped
+    mem_limit: 200m
 
   ts-glances:
     image: tailscale/tailscale:latest
@@ -233,6 +237,7 @@ services:
     cap_add:
       - net_admin
     restart: unless-stopped
+    mem_limit: 200m
 
   ts-qbittorrent:
     image: tailscale/tailscale:latest
@@ -252,6 +257,7 @@ services:
     cap_add:
       - net_admin
     restart: unless-stopped
+    mem_limit: 200m
 
   ts-dozzle:
     image: tailscale/tailscale:latest
@@ -271,6 +277,7 @@ services:
     cap_add:
       - net_admin
     restart: unless-stopped
+    mem_limit: 200m
 
 volumes:
   # SQLite is used as the paperless database. The SQLite file is stored in the data volume.
