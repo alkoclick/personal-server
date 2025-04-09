@@ -47,6 +47,7 @@ services:
       - "gotenberg"
       - "--chromium-disable-javascript=true"
       - "--chromium-allow-list=file:///tmp/.*"
+    mem_limit: 512m
 
   tika:
     image: docker.io/apache/tika:latest
@@ -82,6 +83,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    mem_limit: 512m
 
   dozzle:
     container_name: dozzle
@@ -90,6 +92,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
+    mem_limit: 128m
 
   glances:
     image: nicolargo/glances:latest
@@ -107,6 +110,7 @@ services:
       - PUID=0
       - PGID=0
       - TZ=Europe/Amsterdam
+    mem_limit: 512m
 
   # We are adding syncthing in here so that we can mount any volumes declared in this docker-compose
   syncthing:
@@ -122,6 +126,7 @@ services:
       - PUID=0  # Use your desired user ID for the container
       - PGID=0  # Use your desired group ID for the container
     # Add a secret API key to secure the Syncthing web UI
+    mem_limit: 128m
 
   qbittorrent:
     image: linuxserver/qbittorrent:5.0.4
@@ -140,6 +145,7 @@ services:
       - /media/external/windows/Music:/music
       - /media/external/windows/Video:/video
     restart: unless-stopped
+    mem_limit: 1024m
 
   jellyfin:
     image: jellyfin/jellyfin:10.10.6
