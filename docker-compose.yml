@@ -185,8 +185,6 @@ services:
     network_mode: service:ts-filebrowser
     depends_on:
       - ts-filebrowser
-    ports:
-      - '8080:8080'
     environment:
       - PUID=116
       - PGID=125
