@@ -176,6 +176,23 @@ services:
     restart: unless-stopped
     mem_limit: 250m
 
+  filebrowser:
+    image: 'filebrowser/filebrowser:v2.32.0-s6'
+    ports:
+      - '8080:8080'
+    environment:
+      - PUID=116
+      - PGID=125
+      - TZ=Etc/UTC
+    volumes:
+      - '/media/external/windows/:/srv'
+      - './filebrowser/settings.json:/config/settings.json'
+      # Database produced after running the following:
+      # `filebrowser config set --auth.method=noauth`
+      # `docker cp filebrowser-filebrowser-1:/database/filebrowser.db.bak filebrowser/filebrowser/filebrowser.db.bak
+      - './filebrowser/filebrowser.db:/database/filebrowser.db'
+    mem_limit: 250m
+
   # Tailscales
   ts-paperless:
     image: tailscale/tailscale:latest
@@ -317,6 +334,27 @@ services:
     restart: unless-stopped
     mem_limit: 200m
 
+  ts-filebrowser:
+    image: tailscale/tailscale:latest
+    container_name: ts-filebrowser
+    hostname: filebrowser
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TS_AUTHKEY:?error}
+      - TS_EXTRA_ARGS=--reset
+      - TS_SERVE_CONFIG=/config/filebrowser.json
+      - TS_USERSPACE=false
+    volumes:
+      - ./tailscale/filebrowser.json:/config/filebrowser.json
+      - ts-filebrowser:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+    mem_limit: 200m
+
+
 volumes:
   # SQLite is used as the paperless database. The SQLite file is stored in the data volume.
   data:
@@ -330,5 +368,6 @@ volumes:
   ts-qbittorrent:
   ts-dozzle:
   ts-it-tools:
+  ts-filebrowser:
   jellyfin-config:
   jellyfin-cache:
