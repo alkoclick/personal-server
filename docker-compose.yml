@@ -69,7 +69,7 @@ services:
     # Set any environmental variables
     environment:
       NODE_ENV: production
-      NODE_OPTIONS: --max_old_space_size=512
+      NODE_OPTIONS: --openssl-legacy-provider --max_old_space_size=512 --optimize_for_size
       # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
       UID: 0
       GID: 0
@@ -77,6 +77,8 @@ services:
     restart: unless-stopped
     # Connect to the Tailscale network
     network_mode: service:ts-dashy
+    command:
+      - yarn run npm-run-all --parallel build start
     # Configure healthchecks
     healthcheck:
       test: [ 'CMD', 'node', '/app/services/healthcheck' ]
