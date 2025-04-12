@@ -69,7 +69,6 @@ services:
     # Set any environmental variables
     environment:
       NODE_ENV: production
-      NODE_OPTIONS: --openssl-legacy-provider --max_old_space_size=512
       # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
       UID: 0
       GID: 0
@@ -77,8 +76,6 @@ services:
     restart: unless-stopped
     # Connect to the Tailscale network
     network_mode: service:ts-dashy
-    command:
-      - npm-run-all --parallel build start
     # Configure healthchecks
     healthcheck:
       test: [ 'CMD', 'node', '/app/services/healthcheck' ]
@@ -86,7 +83,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    mem_limit: 768m
+    mem_limit: 1024m
 
   dozzle:
     container_name: dozzle
