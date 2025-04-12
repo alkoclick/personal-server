@@ -69,7 +69,7 @@ services:
     # Set any environmental variables
     environment:
       NODE_ENV: production
-      NODE_OPTIONS: --openssl-legacy-provider --max_old_space_size=512 --optimize_for_size
+      NODE_OPTIONS: --openssl-legacy-provider --max_old_space_size=512
       # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
       UID: 0
       GID: 0
