@@ -78,7 +78,7 @@ services:
     # Connect to the Tailscale network
     network_mode: service:ts-dashy
     command:
-      - yarn run npm-run-all --parallel build start
+      - npm-run-all --parallel build start
     # Configure healthchecks
     healthcheck:
       test: [ 'CMD', 'node', '/app/services/healthcheck' ]
