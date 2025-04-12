@@ -178,6 +178,8 @@ services:
 
   filebrowser:
     image: 'filebrowser/filebrowser:v2.32.0-s6'
+    container_name: filebrowser
+    platform: linux/arm64
     ports:
       - '8080:8080'
     environment:
