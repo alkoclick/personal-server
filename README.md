@@ -25,10 +25,10 @@ My home automation setup, currently on a Raspberry Pi 4B.
 * Add music library syncing on Syncthing
 
 ## Backlog
+* Make a fork of dashy with less resource usage
 
 #### Monitoring
 * Set up S.M.A.R.T. monitoring
 
 #### Jellyfin upgrades
-* Upload music via the UI? E.g: https://github.com/grandguyjs/media-upload-plugin
 * yt-dlp + Jellyfin integration? E.g: https://github.com/jmbannon/ytdl-sub?tab=readme-ov-file
