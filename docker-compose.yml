@@ -87,7 +87,7 @@ services:
 
   dozzle:
     container_name: dozzle
-    image: amir20/dozzle:v8.11.9
+    image: amir20/dozzle:v8.12.7
     network_mode: service:ts-dozzle
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
