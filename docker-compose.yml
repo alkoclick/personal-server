@@ -83,7 +83,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    mem_limit: 1024m
+    mem_limit: 2000m # Used only occasionally in builds
 
   dozzle:
     container_name: dozzle
