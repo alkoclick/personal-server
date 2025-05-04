@@ -204,7 +204,7 @@ services:
     platform: linux/arm64
     security_opt:
       - seccomp:unconfined # Because error code 159 keeps showing up otherwise
-    user: "1"
+    user: 0:0
     network_mode: service:ts-grist
     env_file:
       - ./grist/public.env
