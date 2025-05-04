@@ -198,6 +198,25 @@ services:
       - './filebrowser/filebrowser.db:/database/filebrowser.db'
     mem_limit: 250m
 
+  grist:
+    image: gristlabs/grist:1.5.2 # https://hub.docker.com/r/gristlabs/grist/tags
+    container_name: grist
+    platform: linux/arm64
+    user: "1000"
+    network_mode: service:ts-grist
+    env_file:
+      - ./grist/public.env
+    volumes:
+      - grist_data:/persist
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8484/" ]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+    mem_limit: 500m
+
   # Tailscales
   ts-paperless:
     image: tailscale/tailscale:latest
@@ -359,6 +378,25 @@ services:
     restart: unless-stopped
     mem_limit: 200m
 
+  ts-grist:
+    image: tailscale/tailscale:latest
+    container_name: ts-grist
+    hostname: sheets
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TS_AUTHKEY:?error}
+      - TS_EXTRA_ARGS=--reset
+      - TS_SERVE_CONFIG=/config/grist.json
+      - TS_USERSPACE=false
+    volumes:
+      - ./tailscale/grist.json:/config/grist.json
+      - ts-grist:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+    mem_limit: 200m
 
 volumes:
   # SQLite is used as the paperless database. The SQLite file is stored in the data volume.
@@ -366,6 +404,7 @@ volumes:
   media:
   redisdata:
   dashy-app:
+  grist_data:
   ts-paperless:
   ts-dashy:
   ts-jellyfin:
@@ -374,5 +413,6 @@ volumes:
   ts-dozzle:
   ts-it-tools:
   ts-filebrowser:
+  ts-grist:
   jellyfin-config:
   jellyfin-cache:
