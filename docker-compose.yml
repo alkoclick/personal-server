@@ -57,7 +57,7 @@ services:
     mem_limit: 512m
 
   gitops:
-    image: ghcr.io/alkoclick/docker-compose-gitops:1.2.0
+    image: ghcr.io/alkoclick/docker-compose-gitops:v1.2.0
     container_name: gitops
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
