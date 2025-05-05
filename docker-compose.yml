@@ -258,6 +258,7 @@ services:
       start_period: 30s
       timeout: 10s
     restart: unless-stopped
+    mem_limit: 200m
 
   # Tailscales
   ts-paperless:
