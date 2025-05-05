@@ -62,7 +62,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/git  # Or ../../:/git to map git repo root to /git
-    mem_limit: 200m
+    mem_limit: 100m
     restart: always
 
   dashy:
