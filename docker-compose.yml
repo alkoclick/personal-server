@@ -56,14 +56,14 @@ services:
       - TIKA_OPTS=-Xmx512m -Xms512m
     mem_limit: 512m
 
-  gitops:
-    image: ghcr.io/alkoclick/docker-compose-gitops:main
-    container_name: gitops
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./:/git  # Or ../../:/git to map git repo root to /git
-    mem_limit: 200m
-    restart: always
+#  gitops:
+#    image: ghcr.io/alkoclick/docker-compose-gitops:main
+#    container_name: gitops
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - ./:/git  # Or ../../:/git to map git repo root to /git
+#    mem_limit: 200m
+#    restart: always
 
   dashy:
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
