@@ -241,7 +241,7 @@ services:
     network_mode: service:ts-speedtest
     # We have to bind this in because by default they enable a 443 listener which keeps complaining due to Tailscale already using it
     volumes:
-      - ./speedtest/nginx.conf:/config/nginx/site-confs/nginx.conf
+      - ./speedtest/nginx.conf:/config/nginx/site-confs/nginx.conf:ro
     environment:
       - PUID=1000
       - PGID=1000
