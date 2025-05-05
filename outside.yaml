@@ -1,0 +1,661 @@
+name: paperless
+services:
+  broker:
+    image: docker.io/library/redis:7
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: volume
+        source: redisdata
+        target: /data
+        volume: {}
+  dashy:
+    container_name: dashy
+    depends_on:
+      ts-dashy:
+        condition: service_started
+        required: true
+    environment:
+      GID: "0"
+      NODE_ENV: production
+      UID: "0"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - /app/services/healthcheck
+      timeout: 10s
+      interval: 1m30s
+      retries: 3
+      start_period: 40s
+    image: lissy93/dashy:latest
+    mem_limit: "2097152000"
+    network_mode: service:ts-dashy
+    restart: unless-stopped
+    volumes:
+      - type: volume
+        source: dashy-app
+        target: /app
+        volume: {}
+  dozzle:
+    container_name: dozzle
+    depends_on:
+      ts-dozzle:
+        condition: service_started
+        restart: true
+        required: true
+    image: amir20/dozzle:v8.12.7
+    mem_limit: "134217728"
+    network_mode: service:ts-dozzle
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        bind:
+          create_host_path: true
+  filebrowser:
+    container_name: filebrowser
+    depends_on:
+      ts-filebrowser:
+        condition: service_started
+        required: true
+    environment:
+      PGID: "125"
+      PUID: "116"
+      TZ: Etc/UTC
+    image: filebrowser/filebrowser:v2.32.0-s6
+    mem_limit: "262144000"
+    network_mode: service:ts-filebrowser
+    platform: linux/arm64
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - type: bind
+        source: /media/external/windows/
+        target: /srv
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /home/pi/personal-server/filebrowser/settings.json
+        target: /config/settings.json
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /home/pi/personal-server/filebrowser/filebrowser.db
+        target: /database/filebrowser.db
+        bind:
+          create_host_path: true
+  gitops:
+    container_name: gitops
+    image: ghcr.io/alkoclick/docker-compose-gitops:v1.2.0
+    mem_limit: "104857600"
+    networks:
+      default: null
+    restart: always
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /home/pi/personal-server
+        target: /git
+        bind:
+          create_host_path: true
+  glances:
+    container_name: glances
+    depends_on:
+      ts-glances:
+        condition: service_started
+        required: true
+    environment:
+      GLANCES_OPT: -w -t 5
+      PGID: "0"
+      PUID: "0"
+      TZ: Europe/Amsterdam
+    image: nicolargo/glances:latest
+    mem_limit: "536870912"
+    network_mode: service:ts-glances
+    platform: linux/arm64
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+        bind:
+          create_host_path: true
+  gotenberg:
+    command:
+      - gotenberg
+      - --chromium-disable-javascript=true
+      - --chromium-allow-list=file:///tmp/.*
+    image: docker.io/gotenberg/gotenberg:8.7
+    mem_limit: "536870912"
+    networks:
+      default: null
+    restart: unless-stopped
+  grist:
+    container_name: grist
+    depends_on:
+      ts-grist:
+        condition: service_started
+        restart: true
+        required: true
+    environment:
+      APP_HOME_URL: https://sheets.barred-boa.ts.net
+      GRIST_FORCE_LOGIN: "false"
+      GRIST_HIDE_UI_ELEMENTS: billing,multiSite,multiAccounts
+      GRIST_LIST_PUBLIC_SITES: "false"
+      GRIST_MAX_UPLOAD_ATTACHMENT_MB: "10"
+      GRIST_MAX_UPLOAD_IMPORT_MB: "300"
+      GRIST_ORG_IN_PATH: "false"
+      GRIST_PAGE_TITLE_SUFFIX: _blank
+      GRIST_SINGLE_ORG: home
+      GRIST_SUPPORT_ANON: "true"
+      GRIST_THROTTLE_CPU: "true"
+      GRIST_WIDGET_LIST_URL: https://github.com/gristlabs/grist-widget/releases/download/latest/manifest.json
+      PYTHON_VERSION: "3"
+      PYTHON_VERSION_ON_CREATION: "3"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8484/
+      timeout: 10s
+      interval: 1m0s
+      retries: 3
+      start_period: 1m0s
+    image: gristlabs/grist:1.5.2
+    mem_limit: "524288000"
+    network_mode: service:ts-grist
+    platform: linux/arm64
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+    user: "0:0"
+    volumes:
+      - type: volume
+        source: grist_data
+        target: /persist
+        volume: {}
+  it-tools:
+    container_name: it-tools
+    depends_on:
+      ts-it-tools:
+        condition: service_started
+        required: true
+    image: ghcr.io/corentinth/it-tools:latest
+    mem_limit: "262144000"
+    network_mode: service:ts-it-tools
+    platform: linux/arm64
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+  jellyfin:
+    container_name: jellyfin
+    depends_on:
+      ts-jellyfin:
+        condition: service_started
+        required: true
+    image: jellyfin/jellyfin:10.10.6
+    mem_limit: "1342177280"
+    network_mode: service:ts-jellyfin
+    restart: unless-stopped
+    user: 116:125
+    volumes:
+      - type: volume
+        source: jellyfin-config
+        target: /config
+        volume: {}
+      - type: volume
+        source: jellyfin-cache
+        target: /cache
+        volume: {}
+      - type: bind
+        source: /media/external/windows/Music
+        target: /media/music
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /media/external/windows/Books
+        target: /media/books
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /media/external/windows/Radio
+        target: /media/radio
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /media/external/windows/Video
+        target: /media/video
+        bind:
+          create_host_path: true
+  qbittorrent:
+    container_name: qbittorrent
+    depends_on:
+      ts-qbittorrent:
+        condition: service_started
+        required: true
+    environment:
+      PGID: "125"
+      PUID: "116"
+      TZ: Etc/UTC
+    image: linuxserver/qbittorrent:5.0.4
+    mem_limit: "1073741824"
+    network_mode: service:ts-qbittorrent
+    platform: linux/arm64
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - type: bind
+        source: /media/external/windows/Music
+        target: /music
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /media/external/windows/Video
+        target: /video
+        bind:
+          create_host_path: true
+  syncthing:
+    container_name: syncthing
+    environment:
+      PGID: "0"
+      PUID: "0"
+    image: syncthing/syncthing:latest
+    mem_limit: "134217728"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: volume
+        source: media
+        target: /media
+        volume: {}
+      - type: bind
+        source: /home/pi/personal-server/syncthing/config.xml
+        target: /var/syncthing/config/config.xml
+        bind:
+          create_host_path: true
+  tika:
+    environment:
+      TIKA_OPTS: -Xmx512m -Xms512m
+    image: docker.io/apache/tika:latest
+    mem_limit: "536870912"
+    networks:
+      default: null
+    restart: unless-stopped
+  ts-dashy:
+    cap_add:
+      - net_admin
+    container_name: ts-dashy
+    devices:
+      - source: /dev/net/tun
+        target: /dev/net/tun
+        permissions: rwm
+    environment:
+      TS_AUTHKEY: tskey-auth-kYTfPqevRJ11CNTRL-zwfzUgebFWJ33xKiTsxrWJ43LfbPQLz2
+      TS_EXTRA_ARGS: --reset
+      TS_SERVE_CONFIG: /config/dashy.json
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    hostname: dashy
+    image: tailscale/tailscale:latest
+    mem_limit: "209715200"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/pi/personal-server/tailscale/dashy.json
+        target: /config/dashy.json
+        bind:
+          create_host_path: true
+      - type: volume
+        source: ts-dashy
+        target: /var/lib/tailscale
+        volume: {}
+  ts-dozzle:
+    cap_add:
+      - net_admin
+    container_name: ts-dozzle
+    devices:
+      - source: /dev/net/tun
+        target: /dev/net/tun
+        permissions: rwm
+    environment:
+      TS_AUTHKEY: tskey-auth-kYTfPqevRJ11CNTRL-zwfzUgebFWJ33xKiTsxrWJ43LfbPQLz2
+      TS_EXTRA_ARGS: --reset
+      TS_SERVE_CONFIG: /config/dozzle.json
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    hostname: dozzle
+    image: tailscale/tailscale:latest
+    mem_limit: "209715200"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/pi/personal-server/tailscale/dozzle.json
+        target: /config/dozzle.json
+        bind:
+          create_host_path: true
+      - type: volume
+        source: ts-dozzle
+        target: /var/lib/tailscale
+        volume: {}
+  ts-filebrowser:
+    cap_add:
+      - net_admin
+    container_name: ts-filebrowser
+    devices:
+      - source: /dev/net/tun
+        target: /dev/net/tun
+        permissions: rwm
+    environment:
+      TS_AUTHKEY: tskey-auth-kYTfPqevRJ11CNTRL-zwfzUgebFWJ33xKiTsxrWJ43LfbPQLz2
+      TS_EXTRA_ARGS: --reset
+      TS_SERVE_CONFIG: /config/filebrowser.json
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    hostname: filebrowser
+    image: tailscale/tailscale:latest
+    mem_limit: "209715200"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/pi/personal-server/tailscale/filebrowser.json
+        target: /config/filebrowser.json
+        bind:
+          create_host_path: true
+      - type: volume
+        source: ts-filebrowser
+        target: /var/lib/tailscale
+        volume: {}
+  ts-glances:
+    cap_add:
+      - net_admin
+    container_name: ts-glances
+    devices:
+      - source: /dev/net/tun
+        target: /dev/net/tun
+        permissions: rwm
+    environment:
+      TS_AUTHKEY: tskey-auth-kYTfPqevRJ11CNTRL-zwfzUgebFWJ33xKiTsxrWJ43LfbPQLz2
+      TS_EXTRA_ARGS: --reset
+      TS_SERVE_CONFIG: /config/glances.json
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    hostname: glances
+    image: tailscale/tailscale:latest
+    mem_limit: "209715200"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/pi/personal-server/tailscale/glances.json
+        target: /config/glances.json
+        bind:
+          create_host_path: true
+      - type: volume
+        source: ts-glances
+        target: /var/lib/tailscale
+        volume: {}
+  ts-grist:
+    cap_add:
+      - net_admin
+    container_name: ts-grist
+    devices:
+      - source: /dev/net/tun
+        target: /dev/net/tun
+        permissions: rwm
+    environment:
+      TS_AUTHKEY: tskey-auth-kYTfPqevRJ11CNTRL-zwfzUgebFWJ33xKiTsxrWJ43LfbPQLz2
+      TS_EXTRA_ARGS: --reset
+      TS_SERVE_CONFIG: /config/grist.json
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    hostname: sheets
+    image: tailscale/tailscale:latest
+    mem_limit: "209715200"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/pi/personal-server/tailscale/grist.json
+        target: /config/grist.json
+        bind:
+          create_host_path: true
+      - type: volume
+        source: ts-grist
+        target: /var/lib/tailscale
+        volume: {}
+  ts-it-tools:
+    cap_add:
+      - net_admin
+    container_name: ts-it-tools
+    devices:
+      - source: /dev/net/tun
+        target: /dev/net/tun
+        permissions: rwm
+    environment:
+      TS_AUTHKEY: tskey-auth-kYTfPqevRJ11CNTRL-zwfzUgebFWJ33xKiTsxrWJ43LfbPQLz2
+      TS_EXTRA_ARGS: --reset
+      TS_SERVE_CONFIG: /config/it-tools.json
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    hostname: it-tools
+    image: tailscale/tailscale:latest
+    mem_limit: "209715200"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/pi/personal-server/tailscale/it-tools.json
+        target: /config/it-tools.json
+        bind:
+          create_host_path: true
+      - type: volume
+        source: ts-it-tools
+        target: /var/lib/tailscale
+        volume: {}
+  ts-jellyfin:
+    cap_add:
+      - net_admin
+    container_name: ts-jellyfin
+    devices:
+      - source: /dev/net/tun
+        target: /dev/net/tun
+        permissions: rwm
+    environment:
+      TS_AUTHKEY: tskey-auth-kYTfPqevRJ11CNTRL-zwfzUgebFWJ33xKiTsxrWJ43LfbPQLz2
+      TS_EXTRA_ARGS: --reset
+      TS_SERVE_CONFIG: /config/jellyfin.json
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    hostname: jellyfin
+    image: tailscale/tailscale:latest
+    mem_limit: "209715200"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/pi/personal-server/tailscale/jellyfin.json
+        target: /config/jellyfin.json
+        bind:
+          create_host_path: true
+      - type: volume
+        source: ts-jellyfin
+        target: /var/lib/tailscale
+        volume: {}
+  ts-paperless:
+    cap_add:
+      - net_admin
+    container_name: ts-paperless
+    devices:
+      - source: /dev/net/tun
+        target: /dev/net/tun
+        permissions: rwm
+    environment:
+      TS_AUTHKEY: tskey-auth-kYTfPqevRJ11CNTRL-zwfzUgebFWJ33xKiTsxrWJ43LfbPQLz2
+      TS_EXTRA_ARGS: --reset
+      TS_SERVE_CONFIG: /config/paperless.json
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    hostname: paperless
+    image: tailscale/tailscale:latest
+    mem_limit: "209715200"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/pi/personal-server/tailscale/paperless.json
+        target: /config/paperless.json
+        bind:
+          create_host_path: true
+      - type: volume
+        source: ts-paperless
+        target: /var/lib/tailscale
+        volume: {}
+  ts-qbittorrent:
+    cap_add:
+      - net_admin
+    container_name: ts-qbittorrent
+    devices:
+      - source: /dev/net/tun
+        target: /dev/net/tun
+        permissions: rwm
+    environment:
+      TS_AUTHKEY: tskey-auth-kYTfPqevRJ11CNTRL-zwfzUgebFWJ33xKiTsxrWJ43LfbPQLz2
+      TS_EXTRA_ARGS: --reset
+      TS_SERVE_CONFIG: /config/qbittorrent.json
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    hostname: torrent
+    image: tailscale/tailscale:latest
+    mem_limit: "209715200"
+    networks:
+      default: null
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/pi/personal-server/tailscale/qbittorrent.json
+        target: /config/qbittorrent.json
+        bind:
+          create_host_path: true
+      - type: volume
+        source: ts-qbittorrent
+        target: /var/lib/tailscale
+        volume: {}
+  webserver:
+    depends_on:
+      broker:
+        condition: service_started
+        required: true
+      gotenberg:
+        condition: service_started
+        required: true
+      tika:
+        condition: service_started
+        required: true
+      ts-paperless:
+        condition: service_started
+        required: true
+    environment:
+      PAPERLESS_ENABLE_NLTK: "false"
+      PAPERLESS_FILENAME_FORMAT: '{{ created_year }}/{{ correspondent }}/{{ title }}'
+      PAPERLESS_OCR_CLEAN: none
+      PAPERLESS_OCR_LANGUAGE: eng
+      PAPERLESS_OCR_LANGUAGES: ell
+      PAPERLESS_OCR_PAGES: "1"
+      PAPERLESS_OCR_SKIP_ARCHIVE_FILES: with_text
+      PAPERLESS_OCR_USER_ARGS: '{"continue_on_soft_render_error": true}'
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_TASK_WORKERS: "1"
+      PAPERLESS_THREADS_PER_WORKER: "1"
+      PAPERLESS_TIKA_ENABLED: "1"
+      PAPERLESS_TIKA_ENDPOINT: http://tika:9998
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
+      PAPERLESS_TIME_ZONE: Europe/Amsterdam
+      PAPERLESS_URL: https://paperless.barred-boa.ts.net
+      PAPERLESS_WEBSERVER_WORKERS: "1"
+      USERMAP_GID: "1000"
+      USERMAP_UID: "1000"
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    mem_limit: "1572864000"
+    network_mode: service:ts-paperless
+    platform: linux/arm64
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - type: volume
+        source: data
+        target: /usr/src/paperless/data
+        volume: {}
+      - type: volume
+        source: media
+        target: /usr/src/paperless/media
+        volume: {}
+      - type: bind
+        source: /home/pi/personal-server/export
+        target: /usr/src/paperless/export
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /home/pi/personal-server/consume
+        target: /usr/src/paperless/consume
+        bind:
+          create_host_path: true
+networks:
+  default:
+    name: paperless_default
+volumes:
+  dashy-app:
+    name: paperless_dashy-app
+  data:
+    name: paperless_data
+  grist_data:
+    name: paperless_grist_data
+  jellyfin-cache:
+    name: paperless_jellyfin-cache
+  jellyfin-config:
+    name: paperless_jellyfin-config
+  media:
+    name: paperless_media
+  redisdata:
+    name: paperless_redisdata
+  ts-dashy:
+    name: paperless_ts-dashy
+  ts-dozzle:
+    name: paperless_ts-dozzle
+  ts-filebrowser:
+    name: paperless_ts-filebrowser
+  ts-glances:
+    name: paperless_ts-glances
+  ts-grist:
+    name: paperless_ts-grist
+  ts-it-tools:
+    name: paperless_ts-it-tools
+  ts-jellyfin:
+    name: paperless_ts-jellyfin
+  ts-paperless:
+    name: paperless_ts-paperless
+  ts-qbittorrent:
+    name: paperless_ts-qbittorrent

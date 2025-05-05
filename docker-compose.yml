@@ -61,9 +61,11 @@ services:
     container_name: gitops
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./:/git  # Or ../../:/git to map git repo root to /git
+      # You have to match the paths inside and outside the container, otherwise docker compose will detect changes in your volume mounts because it uses absolute paths!
+      - ${PWD}:${PWD}
+    working_dir: ${PWD}
     mem_limit: 100m
-    restart: always
+    restart: unless-stopped
 
   dashy:
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
