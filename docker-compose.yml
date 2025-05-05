@@ -65,7 +65,7 @@ services:
       - ${PWD}:${PWD}
     working_dir: ${PWD}
     mem_limit: 101m
-    restart: unless-stopped
+    restart: always
 
   dashy:
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
