@@ -232,6 +232,19 @@ services:
     restart: unless-stopped
     mem_limit: 500m
 
+  speedtest:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest
+    platform: linux/arm64
+    network_mode: service:ts-speedtest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      # seCuRiTy lmao
+      - APP_KEY=base64:BlHsZAQoZaeNRYgVbLd3vaLcKH6D/+EFce+ADK0jb8g=
+      - DB_CONNECTION=sqlite
+    restart: unless-stopped
+
   # Tailscales
   ts-paperless:
     image: tailscale/tailscale:latest
@@ -413,6 +426,26 @@ services:
     restart: unless-stopped
     mem_limit: 200m
 
+  ts-speedtest:
+    image: tailscale/tailscale:latest
+    container_name: ts-speedtest
+    hostname: speedtest
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TS_AUTHKEY:?error}
+      - TS_EXTRA_ARGS=--reset
+      - TS_SERVE_CONFIG=/config/speedtest.json
+      - TS_USERSPACE=false
+    volumes:
+      - ./tailscale/speedtest.json:/config/speedtest.json
+      - ts-speedtest:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+    mem_limit: 200m
+
 volumes:
   # SQLite is used as the paperless database. The SQLite file is stored in the data volume.
   data:
@@ -429,5 +462,6 @@ volumes:
   ts-it-tools:
   ts-filebrowser:
   ts-grist:
+  ts-speedtest:
   jellyfin-config:
   jellyfin-cache:
