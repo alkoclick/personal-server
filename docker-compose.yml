@@ -209,7 +209,7 @@ services:
     env_file:
       - ./grist/public.env
     environment:
-      APP_HOME_URL: 'https://sheets.${TS_DOMAIN}'
+      APP_HOME_URL: "https://sheets.${TS_DOMAIN}"
     volumes:
       - grist_data:/persist
     healthcheck:
