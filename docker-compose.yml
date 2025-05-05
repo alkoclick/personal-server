@@ -64,7 +64,7 @@ services:
       # You have to match the paths inside and outside the container, otherwise docker compose will detect changes in your volume mounts because it uses absolute paths!
       - ${PWD}:${PWD}
     working_dir: ${PWD}
-    mem_limit: 100m
+    mem_limit: 101m
     restart: unless-stopped
 
   dashy:
