@@ -249,6 +249,8 @@ services:
       - APP_KEY=base64:BlHsZAQoZaeNRYgVbLd3vaLcKH6D/+EFce+ADK0jb8g=
       - DB_CONNECTION=sqlite
       - PUBLIC_DASHBOARD=true
+      - SPEEDTEST_SCHEDULE=* */30 * * *  # Every 30 minutes
+      - DISPLAY_TIMEZONE=Etc/CEST
     restart: unless-stopped
 
   # Tailscales
