@@ -56,17 +56,6 @@ services:
       - TIKA_OPTS=-Xmx512m -Xms512m
     mem_limit: 512m
 
-  gitops:
-    image: ghcr.io/alkoclick/docker-compose-gitops:v1.4.0
-    container_name: gitops
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      # You have to match the paths inside and outside the container, otherwise docker compose will detect changes in your volume mounts because it uses absolute paths!
-      - ${PWD}:${PWD}
-    working_dir: ${PWD}
-    mem_limit: 101m
-    restart: always
-
   dashy:
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
     # build: .
