@@ -13,7 +13,6 @@ My home automation setup, currently on a Raspberry Pi 4B.
 
 ## Current services (ported to code)
 
-* [Dashy](https://github.com/Lissy93/dashy)
 * [Jellyfin](https://github.com/jellyfin/jellyfin)
 * [Tailscale](https://tailscale.com/)
 * [qBittorrent](https://github.com/qbittorrent/qBittorrent)
@@ -26,6 +25,7 @@ My home automation setup, currently on a Raspberry Pi 4B.
 * Some kind of uptime monitoring
 * Add music library syncing on Syncthing
 * Remote tailscale SSH access
+* Figure out how to re-add torrents
 
 ## Backlog
 * Make a fork of dashy with less resource usage
