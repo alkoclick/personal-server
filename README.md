@@ -27,7 +27,6 @@ My home automation setup, currently on a Raspberry Pi 4B.
 ## TODO
 * Some kind of uptime monitoring
 * Add music library syncing on Syncthing
-* Some kind of gitops to automatically fetch and deploy changes to the server
 * Remote tailscale SSH access
 * Translation tooling:
   * Supports on-the-spot translations
