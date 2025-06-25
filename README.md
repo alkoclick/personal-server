@@ -24,7 +24,6 @@ My home automation setup, currently on a Raspberry Pi 4B.
 ## TODO
 * Some kind of uptime monitoring
 * Add music library syncing on Syncthing
-* Remote tailscale SSH access
 * Figure out how to re-add torrents
 
 #### Monitoring
