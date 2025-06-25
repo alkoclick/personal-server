@@ -2,60 +2,6 @@
 name:  paperless
 
 services:
-  broker:
-    image: docker.io/library/redis:7
-    restart: unless-stopped
-    volumes:
-      - redisdata:/data
-
-  webserver:
-    image: ghcr.io/paperless-ngx/paperless-ngx:latest
-    platform: linux/arm64 # Because the autodetection does not work for Raspberry Pi 4B
-    restart: unless-stopped
-    security_opt:
-      - seccomp:unconfined
-    depends_on:
-      - broker
-      - gotenberg
-      - tika
-      - ts-paperless
-    volumes:
-      - data:/usr/src/paperless/data
-      - media:/usr/src/paperless/media
-      - ./export:/usr/src/paperless/export
-      - ./consume:/usr/src/paperless/consume
-    env_file: paperless.env
-    environment:
-      PAPERLESS_REDIS: redis://broker:6379
-      PAPERLESS_TIKA_ENABLED: 1
-      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
-      PAPERLESS_TIKA_ENDPOINT: http://tika:9998
-    network_mode: service:ts-paperless
-    mem_limit: 1500m
-
-  # - Apache Tika and Gotenberg servers are started with paperless and paperless
-  #   is configured to use these services. These provide support for consuming
-  #   Office documents (Word, Excel, Power Point and their LibreOffice counter-
-  #   parts.
-  gotenberg:
-    image: docker.io/gotenberg/gotenberg:8.7
-    restart: unless-stopped
-
-    # The gotenberg chromium route is used to convert .eml files. We do not
-    # want to allow external content like tracking pixels or even javascript.
-    command:
-      - "gotenberg"
-      - "--chromium-disable-javascript=true"
-      - "--chromium-allow-list=file:///tmp/.*"
-    mem_limit: 512m
-
-  tika:
-    image: docker.io/apache/tika:latest
-    restart: unless-stopped
-    environment:
-      - TIKA_OPTS=-Xmx512m -Xms512m
-    mem_limit: 512m
-
   dashy:
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
     # build: .
@@ -250,25 +196,6 @@ services:
     mem_limit: 200m
 
   # Tailscales
-  ts-paperless:
-    image: tailscale/tailscale:latest
-    container_name: ts-paperless
-    hostname: paperless
-    environment:
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_AUTHKEY=${TS_AUTHKEY:?error}
-      - TS_EXTRA_ARGS=--reset
-      - TS_SERVE_CONFIG=/config/paperless.json
-      - TS_USERSPACE=false
-    volumes:
-      - ./tailscale/paperless.json:/config/paperless.json
-      - ts-paperless:/var/lib/tailscale
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    cap_add:
-      - net_admin
-    restart: unless-stopped
-    mem_limit: 200m
 
   ts-dashy:
     image: tailscale/tailscale:latest
@@ -451,13 +378,8 @@ services:
     mem_limit: 200m
 
 volumes:
-  # SQLite is used as the paperless database. The SQLite file is stored in the data volume.
-  data:
-  media:
-  redisdata:
   dashy-app:
   grist_data:
-  ts-paperless:
   ts-dashy:
   ts-jellyfin:
   ts-glances:
