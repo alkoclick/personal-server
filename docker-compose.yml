@@ -152,7 +152,7 @@ services:
     mem_limit: 500m
 
   speedtest:
-    image: lscr.io/linuxserver/speedtest-tracker
+    image: lscr.io/linuxserver/speedtest-tracker:v1.5.0-ls91 # Public dashboard broken and sellout to Apprise after 1.6.0
     container_name: speedtest
     platform: linux/arm64
     security_opt:
@@ -168,7 +168,7 @@ services:
       - APP_KEY=base64:BlHsZAQoZaeNRYgVbLd3vaLcKH6D/+EFce+ADK0jb8g=
       - DB_CONNECTION=sqlite
       - PUBLIC_DASHBOARD=true
-      - SPEEDTEST_SCHEDULE=*/30 * * * *  # Every 30 minutes
+      - SPEEDTEST_SCHEDULE=*/15 * * * *  # Every 15 minutes
       - DISPLAY_TIMEZONE=Europe/Amsterdam
     healthcheck:
       test: curl -fSs APP_URL/api/healthcheck | jq -r .message || exit 1
