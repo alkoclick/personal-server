@@ -27,9 +27,6 @@ My home automation setup, currently on a Raspberry Pi 4B.
 * Remote tailscale SSH access
 * Figure out how to re-add torrents
 
-## Backlog
-* Make a fork of dashy with less resource usage
-
 #### Monitoring
 * Set up S.M.A.R.T. monitoring
 
