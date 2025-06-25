@@ -13,9 +13,7 @@ My home automation setup, currently on a Raspberry Pi 4B.
 
 ## Current services (ported to code)
 
-* [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx)
 * [Dashy](https://github.com/Lissy93/dashy)
-* [Syncthing](https://github.com/syncthing/syncthing)
 * [Jellyfin](https://github.com/jellyfin/jellyfin)
 * [Tailscale](https://tailscale.com/)
 * [qBittorrent](https://github.com/qbittorrent/qBittorrent)
@@ -28,10 +26,6 @@ My home automation setup, currently on a Raspberry Pi 4B.
 * Some kind of uptime monitoring
 * Add music library syncing on Syncthing
 * Remote tailscale SSH access
-* Translation tooling:
-  * Supports on-the-spot translations
-  * Supports document translation
-  * (Optional) Supports voice translation
 
 ## Backlog
 * Make a fork of dashy with less resource usage

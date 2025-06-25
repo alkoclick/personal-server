@@ -58,22 +58,6 @@ services:
       - TZ=Europe/Amsterdam
     mem_limit: 512m
 
-  # We are adding syncthing in here so that we can mount any volumes declared in this docker-compose
-  syncthing:
-    image: syncthing/syncthing:latest
-    container_name: syncthing
-    restart: unless-stopped
-    #    ports:
-    #      - "8484:8384"   # Exposes the Syncthing web UI on port 8484, off by default unless you need it for troubleshooting
-    volumes:
-      - media:/media   # Mounts the paperless media volume
-      - ./syncthing/config.xml:/var/syncthing/config/config.xml  # Persist Syncthing's settings
-    environment:
-      - PUID=0  # Use your desired user ID for the container
-      - PGID=0  # Use your desired group ID for the container
-    # Add a secret API key to secure the Syncthing web UI
-    mem_limit: 128m
-
   qbittorrent:
     image: linuxserver/qbittorrent:5.0.4
     container_name: qbittorrent
@@ -240,7 +224,7 @@ services:
   ts-glances:
     image: tailscale/tailscale:latest
     container_name: ts-glances
-    hostname: glances
+    hostname: glances-calliope
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
@@ -280,7 +264,7 @@ services:
   ts-dozzle:
     image: tailscale/tailscale:latest
     container_name: ts-dozzle
-    hostname: dozzle
+    hostname: dozzle-calliope
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
