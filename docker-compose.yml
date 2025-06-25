@@ -154,7 +154,7 @@ services:
 
   speedtest:
     image: lscr.io/linuxserver/speedtest-tracker:v1.5.0-ls91 # Public dashboard broken and sellout to Apprise after 1.6.0
-    container_name: speedtest-calliope
+    container_name: speedtest
     platform: linux/arm64
     security_opt:
       - seccomp:unconfined # Because error code 159 keeps showing up otherwise
@@ -345,7 +345,7 @@ services:
   ts-speedtest:
     image: tailscale/tailscale:latest
     container_name: ts-speedtest
-    hostname: speedtest
+    hostname: speedtest-calliope
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
