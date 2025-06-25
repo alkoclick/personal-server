@@ -93,7 +93,7 @@ services:
       - /media/external/windows/Radio:/media/radio
       - /media/external/windows/Video:/media/video
     restart: 'unless-stopped'
-    mem_limit: 1280m
+    mem_limit: 2000m
 
   it-tools:
     image: 'ghcr.io/corentinth/it-tools:latest'
