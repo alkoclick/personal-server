@@ -79,7 +79,7 @@ services:
     mem_limit: 1024m
 
   jellyfin:
-    image: jellyfin/jellyfin:10.10.6
+    image: jellyfin/jellyfin:10.10.7
     container_name: jellyfin
     user: 116:125
     network_mode: service:ts-jellyfin
