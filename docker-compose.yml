@@ -189,12 +189,14 @@ services:
     image: tailscale/tailscale:latest
     container_name: ts-dashy
     hostname: dashy
+    # Disable log uploads because we often get spammed with 429s
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
       - TS_EXTRA_ARGS=--reset
       - TS_SERVE_CONFIG=/config/dashy.json
       - TS_USERSPACE=false
+      - TS_NO_LOGS_NO_SUPPORT=true
     volumes:
       - ./tailscale/dashy.json:/config/dashy.json
       - ts-dashy:/var/lib/tailscale
@@ -209,12 +211,14 @@ services:
     image: tailscale/tailscale:latest
     container_name: ts-jellyfin
     hostname: jellyfin
+    # Disable log uploads because we often get spammed with 429s
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
       - TS_EXTRA_ARGS=--reset
       - TS_SERVE_CONFIG=/config/jellyfin.json
       - TS_USERSPACE=false
+      - TS_NO_LOGS_NO_SUPPORT=true
     volumes:
       - ./tailscale/jellyfin.json:/config/jellyfin.json
       - ts-jellyfin:/var/lib/tailscale
@@ -229,12 +233,14 @@ services:
     image: tailscale/tailscale:latest
     container_name: ts-glances
     hostname: glances-calliope
+    # Disable log uploads because we often get spammed with 429s
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
       - TS_EXTRA_ARGS=--reset
       - TS_SERVE_CONFIG=/config/glances.json
       - TS_USERSPACE=false
+      - TS_NO_LOGS_NO_SUPPORT=true
     volumes:
       - ./tailscale/glances.json:/config/glances.json
       - ts-glances:/var/lib/tailscale
@@ -249,12 +255,14 @@ services:
     image: tailscale/tailscale:latest
     container_name: ts-qbittorrent
     hostname: torrent
+    # Disable log uploads because we often get spammed with 429s
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
       - TS_EXTRA_ARGS=--reset
       - TS_SERVE_CONFIG=/config/qbittorrent.json
       - TS_USERSPACE=false
+      - TS_NO_LOGS_NO_SUPPORT=true
     volumes:
       - ./tailscale/qbittorrent.json:/config/qbittorrent.json
       - ts-qbittorrent:/var/lib/tailscale
@@ -269,12 +277,14 @@ services:
     image: tailscale/tailscale:latest
     container_name: ts-dozzle
     hostname: dozzle-calliope
+    # Disable log uploads because we often get spammed with 429s
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
       - TS_EXTRA_ARGS=--reset
       - TS_SERVE_CONFIG=/config/dozzle.json
       - TS_USERSPACE=false
+      - TS_NO_LOGS_NO_SUPPORT=true
     volumes:
       - ./tailscale/dozzle.json:/config/dozzle.json
       - ts-dozzle:/var/lib/tailscale
@@ -289,12 +299,14 @@ services:
     image: tailscale/tailscale:latest
     container_name: ts-it-tools
     hostname: it-tools
+    # Disable log uploads because we often get spammed with 429s
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
       - TS_EXTRA_ARGS=--reset
       - TS_SERVE_CONFIG=/config/it-tools.json
       - TS_USERSPACE=false
+      - TS_NO_LOGS_NO_SUPPORT=true
     volumes:
       - ./tailscale/it-tools.json:/config/it-tools.json
       - ts-it-tools:/var/lib/tailscale
@@ -309,12 +321,14 @@ services:
     image: tailscale/tailscale:latest
     container_name: ts-filebrowser
     hostname: filebrowser
+    # Disable log uploads because we often get spammed with 429s
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
       - TS_EXTRA_ARGS=--reset
       - TS_SERVE_CONFIG=/config/filebrowser.json
       - TS_USERSPACE=false
+      - TS_NO_LOGS_NO_SUPPORT=true
     volumes:
       - ./tailscale/filebrowser.json:/config/filebrowser.json
       - ts-filebrowser:/var/lib/tailscale
@@ -329,12 +343,14 @@ services:
     image: tailscale/tailscale:latest
     container_name: ts-grist
     hostname: sheets
+    # Disable log uploads because we often get spammed with 429s
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_AUTHKEY=${TS_AUTHKEY:?error}
       - TS_EXTRA_ARGS=--reset
       - TS_SERVE_CONFIG=/config/grist.json
       - TS_USERSPACE=false
+      - TS_NO_LOGS_NO_SUPPORT=true
     volumes:
       - ./tailscale/grist.json:/config/grist.json
       - ts-grist:/var/lib/tailscale
