@@ -362,7 +362,7 @@ services:
     mem_limit: 200m
 
   ts-speedtest:
-    image: tailscale/tailscale:latest
+    image: tailscale/tailscale:v1.70.0
     container_name: ts-speedtest
     hostname: speedtest-calliope
     # Disable log uploads because we often get spammed with 429s
