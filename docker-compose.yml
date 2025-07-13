@@ -79,9 +79,7 @@ services:
     mem_limit: 1024m
 
   jellyfin:
-    # Update to 10.11.0-rc1 blocked because of https://github.com/linuxserver/docker-jellyfin/issues/298
-    # But let's try rc3
-    image: jellyfin/jellyfin:10.11.0-rc1
+    image: jellyfin/jellyfin:10.11.0-rc3
     container_name: jellyfin
     platform: linux/arm64
     user: 116:125
