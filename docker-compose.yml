@@ -81,6 +81,7 @@ services:
   jellyfin:
     image: jellyfin/jellyfin:10.11.0-rc1
     container_name: jellyfin
+    platform: linux/arm64
     user: 116:125
     network_mode: service:ts-jellyfin
     depends_on:
