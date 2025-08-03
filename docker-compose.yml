@@ -88,6 +88,8 @@ services:
       - ts-jellyfin
     security_opt:
       - seccomp:unconfined # Because error code 159 keeps showing up otherwise
+    environment:
+      JELLYFIN_PublishedServerUrl: "https://jellyfin.${TS_DOMAIN}"
     volumes:
       - jellyfin-config:/config
       - jellyfin-cache:/cache
