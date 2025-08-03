@@ -79,7 +79,7 @@ services:
     mem_limit: 1024m
 
   jellyfin:
-    image: jellyfin/jellyfin:10.11.0-rc3
+    image: jellyfin/jellyfin:10.11.0-rc4
     container_name: jellyfin
     platform: linux/arm64
     user: 116:125
