@@ -172,7 +172,7 @@ services:
       - APP_KEY=base64:BlHsZAQoZaeNRYgVbLd3vaLcKH6D/+EFce+ADK0jb8g=
       - DB_CONNECTION=sqlite
       - PUBLIC_DASHBOARD=true
-      - SPEEDTEST_SCHEDULE=*/15 * * * *  # Every 15 minutes
+      - SPEEDTEST_SCHEDULE=45 * * * *  # Every 15 minutes
       - DISPLAY_TIMEZONE=Europe/Amsterdam
     healthcheck:
       test: curl -fSs APP_URL/api/healthcheck | jq -r .message || exit 1
