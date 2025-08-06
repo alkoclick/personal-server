@@ -24,6 +24,7 @@ My home automation setup, currently on a Raspberry Pi 4B.
 ## TODO
 * Actually store torrents in a volume
 * Better backups for jellyfin config (esp playlists)
+* Restore playlists from backups in the old jellyfin/data/config/playlists folder
 
 #### Jellyfin upgrades
 * yt-dlp + Jellyfin integration? E.g: https://github.com/jmbannon/ytdl-sub?tab=readme-ov-file
