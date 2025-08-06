@@ -22,12 +22,8 @@ My home automation setup, currently on a Raspberry Pi 4B.
 * [Grist](https://github.com/gristlabs/grist-core)
 
 ## TODO
-* Some kind of uptime monitoring
-* Add music library syncing on Syncthing
-* Figure out how to re-add torrents
-
-#### Monitoring
-* Set up S.M.A.R.T. monitoring
+* Actually store torrents in a volume
+* Better backups for jellyfin config (esp playlists)
 
 #### Jellyfin upgrades
 * yt-dlp + Jellyfin integration? E.g: https://github.com/jmbannon/ytdl-sub?tab=readme-ov-file

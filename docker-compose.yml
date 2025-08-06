@@ -99,6 +99,7 @@ services:
       - /media/external/windows/Video:/media/video
     restart: 'unless-stopped'
     mem_limit: 2000m
+    # Running a custom css: '@import url("https://cdn.jsdelivr.net/gh/lscambo13/ElegantFin@main/Theme/ElegantFin-jellyfin-theme-build-latest-minified.css");'
 
   it-tools:
     image: 'ghcr.io/corentinth/it-tools:latest'
