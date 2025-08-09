@@ -95,8 +95,14 @@ services:
       - /media/external/windows/Radio:/media/radio
       - /media/external/windows/Video:/media/video
     restart: 'unless-stopped'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8096/health" ]
+      interval: 1m
+      timeout: 15s
+      retries: 3
+      start_period: 5m # Because migrations are run on startup
+      start_interval: 10s
     mem_limit: 2000m
-    # Running a custom css: '@import url("https://cdn.jsdelivr.net/gh/lscambo13/ElegantFin@main/Theme/ElegantFin-jellyfin-theme-build-latest-minified.css");'
 
   it-tools:
     image: 'ghcr.io/corentinth/it-tools:latest'
